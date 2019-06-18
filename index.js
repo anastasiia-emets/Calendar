@@ -1,5 +1,5 @@
 var cal = {
-  mName : ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"], // Month Names
+  mName : ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"], 
   data : null, 
   sDay : 0, 
   sMth : 0, 
@@ -325,9 +325,7 @@ window.addEventListener("load", function () {
 
   document.querySelector(".calendar__enter").addEventListener("click", cal.list);
   document.querySelector(".calendar__next-button").addEventListener("click", cal.next);
-  document.querySelector('.calendar__prev-button').onclick = function() {
-    list(nowMth-1);
-  }
+  document.querySelector(".calendar__prev-button").addEventListener("click", cal.prev);
   document.querySelector(".calendar__today-button").addEventListener("click", cal.list);
   cal.list();
 });
