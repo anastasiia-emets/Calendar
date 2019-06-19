@@ -1,3 +1,3 @@
 # Calendar
 # [DEMO](https://anastasiia-emets.github.io/Calendar/index.html)
-Calendar of events
+Calendar(with events)
