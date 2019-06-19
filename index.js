@@ -1,20 +1,20 @@
 var cal = {
-  mName : ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"], 
-  data : null, 
-  sDay : 0, 
-  sMth : 0, 
-  sYear : 0, 
-  sMon : false, 
+  mName: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"], // Month Names
+  data: null,
+  sDay: 0,
+  sMth: 0,
+  sYear: 0,
+  sMon: false,
 
-  list : function (sMonth) {
-    cal.sMth = parseInt(document.querySelector(".calendar__month").value); 
-    cal.sYear = parseInt(document.querySelector(".calendar__year").value); 
-    var daysInMth = new Date(cal.sYear, cal.sMth+1, 0).getDate(), // к-ть днів у цьому місяці
-        startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // перший день цього місяця
-        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // останій день
+  list: function () {
+    cal.sMth = parseInt(document.querySelector(".calendar__month").value);
+    cal.sYear = parseInt(document.querySelector(".calendar__year").value);
+    var daysInMth = new Date(cal.sYear, cal.sMth + 1, 0).getDate(), // к-ть днів у цьому місяці
+      startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), // перший день цього місяця
+      endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); // останій день
 
     cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
-    if (cal.data==null) {
+    if (cal.data == null) {
       localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, "{}");
       cal.data = {};
     } else {
@@ -24,35 +24,36 @@ var cal = {
     // порожні квадрати
     var squares = [];
     if (cal.sMon && startDay != 1) {
-      var empty = startDay==0 ? 7 : startDay ;
-      for (var i=1; i<empty; i++) { squares.push("empty"); }
+      var empty = startDay == 0 ? 7 : startDay;
+      for (var i = 1; i < empty; i++) { squares.push("empty"); }
     }
     if (!cal.sMon && startDay != 0) {
-      for (var i=0; i<startDay; i++) { squares.push("empty"); }
+      for (i = 0; i < startDay; i++) { squares.push("empty"); }
     }
 
 
-    for (var i=1; i<=daysInMth; i++) { squares.push(i); }
+    for (i = 1; i <= daysInMth; i++) { squares.push(i); }
 
-    
+
     if (cal.sMon && endDay != 0) {
-      var empty = endDay==6 ? 1 : 7-endDay;
-      for (var i=0; i<empty; i++) { squares.push("empty"); }
+      empty = endDay == 6 ? 1 : 7 - endDay;
+      for (i = 0; i < empty; i++) { squares.push("empty"); }
     }
     if (!cal.sMon && endDay != 6) {
-      var empty = endDay==0 ? 6 : 6-endDay;
-      for (var i=0; i<empty; i++) { squares.push("empty"); }
+      empty = endDay == 0 ? 6 : 6 - endDay;
+      for (i = 0; i < empty; i++) { squares.push("empty"); }
     }
 
-  
+
     var container = document.querySelector(".calendar__container"),
-        cTable = document.createElement("table");
+      cTable = document.createElement("table");
     cTable.id = "calendar";
+
     container.innerHTML = "";
-    container.appendChild(cTable);  
+    container.appendChild(cTable);
     var cRow = document.createElement("tr"),
-        cCell = null,
-        days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+      cCell = null,
+      days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
     if (cal.sMon) { days.push(days.shift()); }
     for (var d of days) {
       cCell = document.createElement("td");
@@ -65,20 +66,20 @@ var cal = {
     var total = squares.length;
     cRow = document.createElement("tr");
     cRow.classList.add("calendar__day");
-    for (var i=0; i<total; i++) {
+    for (i = 0; i < total; i++) {
       cCell = document.createElement("td");
-      if (squares[i]=="empty") { cCell.classList.add("calendar__empty-cells"); }
+      if (squares[i] == "empty") { cCell.classList.add("calendar__empty-cells"); }
       else {
-        cCell.innerHTML = "<div class='calendar__day'>"+squares[i]+"</div>";
+        cCell.innerHTML = "<div class='calendar__day'>" + squares[i] + "</div>";
         if (cal.data[squares[i]]) {
           cCell.innerHTML += "<div class='calendar__event-day'>" + cal.data[squares[i]] + "</div>";
         }
-        cCell.addEventListener("click", function(){
+        cCell.addEventListener("click", function () {
           cal.show(this);
         });
       }
       cRow.appendChild(cCell);
-      if (i!=0 && (i+1)%7==0) {
+      if (i != 0 && (i + 1) % 7 == 0) {
         cTable.appendChild(cRow);
         cRow = document.createElement("tr");
         cRow.classList.add("calendar__day");
@@ -89,10 +90,9 @@ var cal = {
   },
 
 
- 
-  show : function (el) {
-    cal.sDay = el.getElementsByClassName("calendar__day")[0].innerHTML;
 
+  show: function (el) {
+    cal.sDay = el.getElementsByClassName("calendar__day")[0].innerHTML;
     var tForm = "<h1 class='calendar__event-header'>" + (cal.data[cal.sDay] ? "РЕДАКТИРОВАТЬ" : "ДОБАВИТЬ") + " СОБЫТИЕ </h1>";
     tForm += "<div class='calendar__event-date'>" + cal.sDay + " " + cal.mName[cal.sMth] + " " + cal.sYear + "</div>";
     tForm += "<textarea class='calendar__event-details' placeholder = 'Введите название события' required>" + (cal.data[cal.sDay] ? cal.data[cal.sDay] : "") + "</textarea>";
@@ -104,7 +104,8 @@ var cal = {
     var eForm = document.createElement("form");
     eForm.classList.add("calendar__form");
     eForm.addEventListener("submit", cal.save);
-    calendar.style.display = "none";    
+
+    calendar.style.display = "none";
     eForm.innerHTML = tForm;
     var container = document.querySelector(".calendar__event");
     container.innerHTML = "";
@@ -112,11 +113,11 @@ var cal = {
 
   },
 
-  close : function () {
+  close: function () {
     document.querySelector(".calendar__event").innerHTML = "";
   },
 
-  save : function (evt) {
+  save: function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
     cal.data[cal.sDay] = document.querySelector(".calendar__event-details").value;
@@ -124,22 +125,22 @@ var cal = {
     cal.list();
   },
 
-  del : function () {
+  del: function () {
     if (confirm("Видалити подію?")) {
       delete cal.data[cal.sDay];
       localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, JSON.stringify(cal.data));
       cal.list();
     }
   },
-  next : function () {
-    cal.sMth = (parseInt(document.querySelector(".calendar__month").value)+1); 
-    cal.sYear = parseInt(document.querySelector(".calendar__year").value); 
-    var daysInMth = new Date(cal.sYear, cal.sMth, 0).getDate(), 
-        startDay = new Date(cal.sYear, cal.sMth, 1).getDay(),
-        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); 
+  next: function () {
+    cal.sMth = (parseInt(document.querySelector(".calendar__month").value) + 1);
+    cal.sYear = parseInt(document.querySelector(".calendar__year").value);
+    var daysInMth = new Date(cal.sYear, cal.sMth, 0).getDate(),
+      startDay = new Date(cal.sYear, cal.sMth, 1).getDay(),
+      endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay();
 
     cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
-    if (cal.data==null) {
+    if (cal.data == null) {
       localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, "{}");
       cal.data = {};
     } else {
@@ -148,35 +149,35 @@ var cal = {
 
     var squares = [];
     if (cal.sMon && startDay != 1) {
-      var empty = startDay==0 ? 7 : startDay ;
-      for (var i=1; i<empty; i++) { squares.push("empty"); }
+      var empty = startDay == 0 ? 7 : startDay;
+      for (var i = 1; i < empty; i++) { squares.push("empty"); }
     }
     if (!cal.sMon && startDay != 0) {
-      for (var i=0; i<startDay; i++) { squares.push("empty"); }
+      for (i = 0; i < startDay; i++) { squares.push("empty"); }
     }
 
-  
-    for (var i=1; i<=daysInMth; i++) { squares.push(i); }
 
-   
+    for (i = 1; i <= daysInMth; i++) { squares.push(i); }
+
+
     if (cal.sMon && endDay != 0) {
-      var empty = endDay==6 ? 1 : 7-endDay;
-      for (var i=0; i<empty; i++) { squares.push("empty"); }
+      empty = endDay == 6 ? 1 : 7 - endDay;
+      for (i = 0; i < empty; i++) { squares.push("empty"); }
     }
     if (!cal.sMon && endDay != 6) {
-      var empty = endDay==0 ? 6 : 6-endDay;
-      for (var i=0; i<empty; i++) { squares.push("empty"); }
+      empty = endDay == 0 ? 6 : 6 - endDay;
+      for (i = 0; i < empty; i++) { squares.push("empty"); }
     }
 
     var container = document.querySelector(".calendar__container"),
-        cTable = document.createElement("table");
+      cTable = document.createElement("table");
     cTable.id = "calendar";
     container.innerHTML = "";
     container.appendChild(cTable);
 
     var cRow = document.createElement("tr"),
-        cCell = null,
-        days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+      cCell = null,
+      days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
     if (cal.sMon) { days.push(days.shift()); }
     for (var d of days) {
       cCell = document.createElement("td");
@@ -189,21 +190,21 @@ var cal = {
     var total = squares.length;
     cRow = document.createElement("tr");
     cRow.classList.add("calendar__day");
-    for (var i=0; i<total; i++) {
+    for (i = 0; i < total; i++) {
       cCell = document.createElement("td");
-      if (squares[i]=="empty") { cCell.classList.add("calendar__empty-cells"); }
+      if (squares[i] == "empty") { cCell.classList.add("calendar__empty-cells"); }
       else {
-        cCell.innerHTML = "<div class='calendar__day'>"+squares[i]+"</div>";
+        cCell.innerHTML = "<div class='calendar__day'>" + squares[i] + "</div>";
         if (cal.data[squares[i]]) {
           cCell.innerHTML += "<div class='calendar__event-day'>" + cal.data[squares[i]] + "</div>";
         }
-        cCell.addEventListener("click", function(){
+        cCell.addEventListener("click", function () {
 
           cal.show(this);
         });
       }
       cRow.appendChild(cCell);
-      if (i!=0 && (i+1)%7==0) {
+      if (i != 0 && (i + 1) % 7 == 0) {
         cTable.appendChild(cRow);
         cRow = document.createElement("tr");
         cRow.classList.add("calendar__day");
@@ -211,18 +212,18 @@ var cal = {
     }
 
     cal.close();
-  
+
   },
-  prev : function () {
-    cal.sMth = (parseInt(document.querySelector(".calendar__month").value)-1); 
-    cal.sYear = parseInt(document.querySelector(".calendar__year").value); 
-    var daysInMth = new Date(cal.sYear, cal.sMth, 0).getDate(), 
-        startDay = new Date(cal.sYear, cal.sMth, 1).getDay(), 
-        endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay(); 
+  prev: function () {
+    cal.sMth = (parseInt(document.querySelector(".calendar__month").value) - 1);
+    cal.sYear = parseInt(document.querySelector(".calendar__year").value);
+    var daysInMth = new Date(cal.sYear, cal.sMth, 0).getDate(),
+      startDay = new Date(cal.sYear, cal.sMth, 1).getDay(),
+      endDay = new Date(cal.sYear, cal.sMth, daysInMth).getDay();
 
     cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
-    if (cal.data==null) {
-      localStorage.setItem("cal-" + cal.sMth+1 + "-" + cal.sYear, "{}");
+    if (cal.data == null) {
+      localStorage.setItem("cal-" + cal.sMth + 1 + "-" + cal.sYear, "{}");
       cal.data = {};
     } else {
       cal.data = JSON.parse(cal.data);
@@ -230,34 +231,34 @@ var cal = {
 
     var squares = [];
     if (cal.sMon && startDay != 1) {
-      var empty = startDay==0 ? 7 : startDay ;
-      for (var i=1; i<empty; i++) { squares.push("empty"); }
+      var empty = startDay == 0 ? 7 : startDay;
+      for (i = 1; i < empty; i++) { squares.push("empty"); }
     }
     if (!cal.sMon && startDay != 0) {
-      for (var i=0; i<startDay; i++) { squares.push("empty"); }
+      for (i = 0; i < startDay; i++) { squares.push("empty"); }
     }
 
-  
-    for (var i=1; i<=daysInMth; i++) { squares.push(i); }
+
+    for (i = 1; i <= daysInMth; i++) { squares.push(i); }
 
     if (cal.sMon && endDay != 0) {
-      var empty = endDay==6 ? 1 : 7-endDay;
-      for (var i=0; i<empty; i++) { squares.push("empty"); }
+      empty = endDay == 6 ? 1 : 7 - endDay;
+      for (i = 0; i < empty; i++) { squares.push("empty"); }
     }
     if (!cal.sMon && endDay != 6) {
-      var empty = endDay==0 ? 6 : 6-endDay;
-      for (var i=0; i<empty; i++) { squares.push("empty"); }
+      empty = endDay == 0 ? 6 : 6 - endDay;
+      for (i = 0; i < empty; i++) { squares.push("empty"); }
     }
 
     var container = document.querySelector(".calendar__container"),
-        cTable = document.createElement("table");
+      cTable = document.createElement("table");
     cTable.id = "calendar";
     container.innerHTML = "";
     container.appendChild(cTable);
 
     var cRow = document.createElement("tr"),
-        cCell = null,
-        days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+      cCell = null,
+      days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
     for (var d of days) {
       cCell = document.createElement("td");
       cCell.innerHTML = d;
@@ -269,21 +270,21 @@ var cal = {
     var total = squares.length;
     cRow = document.createElement("tr");
     cRow.classList.add("calendar__day");
-    for (var i=0; i<total; i++) {
+    for (var i = 0; i < total; i++) {
       cCell = document.createElement("td");
-      if (squares[i]=="empty") { cCell.classList.add("calendar__empty-cells"); }
+      if (squares[i] == "empty") { cCell.classList.add("calendar__empty-cells"); }
       else {
-        cCell.innerHTML = "<div class='calendar__day'>"+squares[i]+"</div>";
+        cCell.innerHTML = "<div class='calendar__day'>" + squares[i] + "</div>";
         if (cal.data[squares[i]]) {
           cCell.innerHTML += "<div class='calendar__event-day'>" + cal.data[squares[i]] + "</div>";
         }
-        cCell.addEventListener("click", function(){
+        cCell.addEventListener("click", function () {
 
           cal.show(this);
         });
       }
       cRow.appendChild(cCell);
-      if (i!=0 && (i+1)%7==0) {
+      if (i != 0 && (i + 1) % 7 == 0) {
         cTable.appendChild(cRow);
         cRow = document.createElement("tr");
         cRow.classList.add("calendar__day");
@@ -291,7 +292,7 @@ var cal = {
     }
 
     cal.close();
-  
+
   }
 };
 
@@ -299,27 +300,27 @@ var cal = {
 window.addEventListener("load", function () {
 
   var now = new Date(),
-      nowMth = now.getMonth(),
-      nowYear = parseInt(now.getFullYear());
-    
-    
+    nowMth = now.getMonth(),
+    nowYear = parseInt(now.getFullYear());
+
+
   // вибрати місяці
   var month = document.querySelector(".calendar__month");
   for (var i = 0; i < 12; i++) {
     var opt = document.createElement("option");
     opt.value = i;
     opt.innerHTML = cal.mName[i];
-    if (i==nowMth) { opt.selected = true; }
+    if (i == nowMth) { opt.selected = true; }
     month.appendChild(opt);
   }
 
   // діапазон 10 років
   var year = document.querySelector(".calendar__year");
-  for (var i = nowYear-10; i<=nowYear+10; i++) {
-    var opt = document.createElement("option");
+  for (i = nowYear - 10; i <= nowYear + 10; i++) {
+    opt = document.createElement("option");
     opt.value = i;
     opt.innerHTML = i;
-    if (i==nowYear) { opt.selected = true; }
+    if (i == nowYear) { opt.selected = true; }
     year.appendChild(opt);
   }
 

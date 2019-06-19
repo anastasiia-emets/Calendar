@@ -1,32 +1,35 @@
-.wrapper{
+.wrapper {
   max-width: 1000px;
-  display:flex;
-  margin:0 auto;
+  display: flex;
+  margin: 0 auto;
   flex-direction: column;
 }
-.calendar__container,.calendar__date{
+.calendar__container,
+.calendar__date {
   display: flex;
   margin: 0 auto;
 }
-
 .calendar__date {
-  margin-bottom:30px;
-  margin-top:30px;
+  margin-bottom: 30px;
+  margin-top: 30px;
 }
-.calendar__month, .calendar__year, .calendar__enter, .calendar__prev-button, .calendar__next-button,.calendar__today-button {
+.calendar__month,
+.calendar__year,
+.calendar__enter,
+.calendar__prev-button,
+.calendar__next-button,
+.calendar__today-button {
   padding: 10px;
   font-size: 16px;
   border-radius: 10px;
   background: rgb(146, 146, 236);
   color: #fff;
-  border:0;
-  margin:3px;
+  border: 0;
+  margin: 3px;
 }
-
-.calendar__next-button{
-  margin-right:30px;
+.calendar__next-button {
+  margin-right: 30px;
 }
-
 .calendar__head {
   font-weight: bold;
   text-transform: uppercase;
@@ -36,17 +39,16 @@
   height: 40px;
   text-align: center;
 }
-
-.calendar__empty-cells  {
+.calendar__empty-cells {
   background: white;
 }
-.calendar__day  {
+.calendar__day {
   font-size: 18px;
   color: rgb(23, 8, 78);
   width: 30px;
   height: auto;
   min-height: 30px;
-  padding: 5px; 
+  padding: 5px;
   vertical-align: top;
 }
 .calendar__day td {
@@ -58,7 +60,6 @@
   background: #eee6ea;
 }
 .calendar__event-day {
-
   font-size: 12px;
   font-weight: bold;
   overflow: hidden;
@@ -86,7 +87,6 @@
   text-transform: uppercase;
   text-align: center;
 }
-
 .calendar__event-details {
   display: block;
   box-sizing: padding-box;
@@ -94,16 +94,17 @@
   margin: 20px 0;
   border: 1px solid rgb(252, 252, 252);
   resize: none;
-  display:flex;
+  display: flex;
   margin: 0 auto;
-  width:80%;
-  margin-bottom:20px;
+  width: 80%;
+  margin-bottom: 20px;
 }
-.calendar__event-button{
-  display:flex;
+.calendar__event-button {
+  display: flex;
   justify-content: center;
 }
-.calendar__save-button, .calendar__cancel-button {
+.calendar__save-button,
+.calendar__cancel-button {
   padding: 10px;
   margin: 5px;
   font-size: 1.2em;
@@ -111,11 +112,10 @@
   background: #0f9e6e;
   color: #fff;
 }
-.calendar__cancel-button{
+.calendar__cancel-button {
   background: #c01717;
   margin-right: 100px;
 }
 #calendar {
   border-collapse: collapse;
 }
-
